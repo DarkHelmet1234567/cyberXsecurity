@@ -1,0 +1,249 @@
+cron tab generator:
+https://crontab.guru/
+https://crontab-generator.org/
+
+
+
+#!/bin/bash								shbang bin bash is how all bash scripts are started, then all corresponding commands are written on the next line
+
+sh examplescript.sh						command used to run a script
+sh diskcleanup.sh argument1 arguement2			to pass an arguement into a script add $1 $2 etc to indicate where the arguement will go withing the script itself
+
+
+
+
+
+cat filename.txt | grep -i search_parameters | wc 
+
+
+
+
+
+cd homework/lucky_duck_investigations/roulette_loss_investigation/dealer_analysis/
+cat 03* | grep '05:00:00 AM' | awk -F" " '{print $1, $2, $5, $6}' >> dealers_workng_during_losses
+cat 03* | grep '08:00:00 AM' | awk -F" " '{print $1, $2, $5, $6}' >> dealers_working_during_losses
+cat 03* | grep '02:00:00 PM' | awk -F" " '{print $1, $2, $5, $6}' >> dealers_working_during_losses
+cat 0310* 0312* | grep '08:00:00 PM' | awk -F" " '{print $1, $2, $5, $6}' >> dealers_working_during_losses
+cat 0310* 0312* | grep '11:00:00 PM' | awk -F" " '{print $1, $2, $5, $6}' >> dealers_working_during_losses
+
+
+
+cat $1_Dealer_schedule | awk -F" " '{print $1, $2, $5, $6}' | grep "$2:00:00" | grep "$3"
+
+cat $1_Dealer_schedule | awk -F" " '{print $1, $2, '$4', '$5'}' | grep "$2:00:00" | grep "$3"
+
+/etc/cron.weekly
+lysnis_system_scan.sh
+#!/bin/bash
+lynis audit system >> /tmp/lynis.system_scan.log
+
+
+
+/etc/cron.daily
+lynis.partial.sh
+#!/bin/bash
+lynis audit --tests-from-group malware,authentication,network,storage,filesystems >> /tmp/lynis.partial_scan.log
+
+
+
+
+
+mkdir ~/research && cp /etc/shadow ~/research ; 
+
+
+
+
+
+
+ 
+sudo find /home -type f -perm 777 > ~/research/exec_list.txt 
+
+
+ps aux --sort -%mem | awk {'print $1, $2, $3, $4, $11'} | head -n 11 > ~/research/top_processes.txt
+
+ls /hom > ~/research/users.txt && cat /etc/passwd
+
+
+#!/bin/bash
+name='Michael'
+echo "hello $name."
+echo -e "\nThis is my script. \n"
+echo -e "this file in $PWD are: \n $(ls)
+
+
+
+sysinfo.sh
+#!/bin/bash
+
+mkdir ~/research 2> /dev/null
+
+echo "A Quick System Audit Script" > ~/research/sys_info.txt
+date >> ~/research/sys_info.txt
+echo "" >> ~/research/sys_info.txt
+echo "Machine Type Info:" >> ~/research/sys_info.txt
+echo $MACHTYPE >> ~/research/sys_info.txt
+echo -e "Uname info: $(uname -a) \n" >> ~/research/sys_info.txt
+echo -e "IP Info: $(ip addr | grep inet | tail -2 | head -1) \n" >> ~/research/sys_info.txt
+echo -e "Hostname: $(hostname -s) \n" >> ~/research/sys_info.txt
+echo "DNS Servers: " >> ~/research/sys_info.txt
+cat /etc/resolv.conf >> ~/research/sys_info.txt
+echo -e "\nMemory Info:" >> ~/research/sys_info.txt
+free >> ~/research/sys_info.txt
+echo -e "\nCPU Info:" >> ~/research/sys_info.txt
+lscpu | grep CPU >> ~/research/sys_info.txt
+echo -e "\nDisk Usage:" >> ~/research/sys_info.txt
+df -H | head -2 >> ~/research/sys_info.txt
+echo -e "\nWho is logged in: \n $(who -a) \n" >> ~/research/sys_info.txt
+echo -e "\nSUID Files:" >> ~/research/sys_info.txt
+find / -type f -perm /4000 >> ~/research/sys_info.txt
+echo -e "\nTop 10 Processes" >> ~/research/sys_info.txt
+ps aux -m | awk {'print $1, $2, $3, $4, $11'} | head >> ~/research/sys_info.txt
+
+
+
+
+
+
+
+ip addr | grep inet | tail -2 | head -1
+
+
+
+
+#			writing if statements 
+#	
+#
+if [ <text> ]					initiates our if statement	
+then						encapsilates the command
+<run_this_command>
+fi						ends the if statment
+#
+#
+#			writing if/else statments
+#
+if
+then
+	syntax commmand
+else
+	
+
+
+
+&& syntax
+if  [ <condition 1> ] && [ <condtion 2> ]	&& makes it an and statment
+						|| makes it an or statment
+
+#
+#
+#
+#
+
+#!/bin/bash
+
+states=('nebraska' 'california' texas' hawaii' 'washington')
+nums=$(echo {0..9})
+
+
+for state in ${states[@]};
+do
+	if [ $state == 'hawaii' ]
+	then
+		echo "hawaii is the best!"
+	else
+		echo "I'm not a fan of Hawaii"
+	fi
+done
+
+for num in ${nums[@}};
+do
+	if [ $numb = 3 ] || [ $numb = 5 ] || [ $numb = 7 ]
+	then 
+		echo $num
+	fi
+done
+
+for x in ${ls_out[@]};
+do 	
+	echo $x
+
+#
+#
+#
+#
+#
+
+#!/bin/bash
+packages=('nano' 'wget' 'net-tools')
+
+for package in ${packages[@]}
+do 
+	if[ $(which $package) ]
+	then
+		echo "$package is installed at $(which $package)"
+	else
+		echo "$package is not instaled."
+	fi
+done
+
+for user in $(ls /home);
+do
+	for item in $(sudo find /home/$user -iname '*.sh');	
+	do 
+		echo e "found a script in $user's home folder! \n$item"
+	done
+done
+
+#
+#
+#
+#
+#
+#
+#
+#
+
+#!/bin/bash
+​
+if [ $UID -ne 1002 ]
+then
+	echo "Please run this script as instructor."
+	exit
+fi
+​
+output=$HOME/research/sys_info.txt
+ip=$(ip addr | grep inet | tail -2 | head -1)
+execs=$(sudo find /home -type f -perm 777)
+​
+if [ ! -d $HOME/research ]
+then
+	mkdir $HOME/research
+	sudo chown instructor:instructor $HOME/research
+fi
+​
+if [ -f $output ]
+then
+	rm $output
+fi
+​
+echo "A Quick System Audit Script" > $output
+date >> $output
+echo "" >> $output
+echo "Machine Type Info:" >> $output
+echo $MACHTYPE >> $output
+echo -e "Uname info: $(uname -a) \n" >> $output
+echo -e "IP Info: " >> $output
+echo -e "$ip \n" >> $output
+echo -e "Hostname: $(hostname -s) \n" >> $output
+echo "DNS Servers: " >> $output
+cat /etc/resolv.conf >> $output
+echo -e "\nExecute Files: \n" >> $output
+echo $execs >> $output
+echo -e "\nDEMO: $ip" >> $output
+
+
+
+
+
+
+
+
