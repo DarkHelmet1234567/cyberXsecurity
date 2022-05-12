@@ -4,7 +4,7 @@ Cybersecurity Bootcamp
 
 The files in this repository were used to configure the network depicted below.
 
--Diagrams/unit 12 hw.jpg
+https://github.com/DarkHelmet1234567/cyberXsecurity/blob/1febaea0c5d0b8263f6e1aee366e3225e0d0086d/Diagrams/unit%2012%20hw.jpg
 
 These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. Alternatively, select portions of the YAML file may be used to install only certain pieces of it, such as Filebeat.
 
