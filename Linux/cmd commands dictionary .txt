@@ -1,0 +1,36 @@
+https://labs.azure.com/virtualmachines
+azure labs user info for class
+Username: azadmin
+Password: p4ssw0rd*
+
+task scheduler						like cron jobs 
+cmd							like terminal 
+
+syntax							definiton
+
+cls							clears screen
+type							like cat; shows text from a file on the cmd
+
+
+wmic /?							shows all wmic aliases
+wmic useraccount get name, sid, description		shows user account info and prints account name, sid and
+
+
+
+
+
+net							lets us set password policies
+net user						prints all users; for adding, removing and managing users
+net user username pw /add				adds a new user
+net user username					for more detailed info for a user 
+net localgroup						shows all local groups; for adding romoving and managing local groups
+net accounts 						for 
+
+
+
+Active Directory
+
+
+gpupdate						forces update on policies for a user
+gpresult /R
+.\sysadmin						use .\ followed by username to log into local machine on windows logon

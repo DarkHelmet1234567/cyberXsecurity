@@ -1,0 +1,102 @@
+cheat sheet 
+https://ucriverside.bootcampcontent.com/UC-Riverside-Coding-Boot-Camp/ucr-riv-cyber-pt-11-2021-u-c/-/blob/master/07-Windows-Administration-and-Hardening/2/CheatSheet.md
+
+**use tab to auto complete like in terminal; it may automatically add .\ to beginning of file**
+*up arrow key to use past command*
+
+
+syntax															function
+
+
+cls															clears the screen
+ctrl+c															stops command that may be running
+
+stop-computer -confirm													turns off computer with a pop up	
+stop-computer -force													turns off computer right away
+
+
+ls C:\windows														same as linux command
+ls c:\windows | where-object{$_.name -like "*system*"}									shows a very concise list looking for the name header system; $_. tells command to look for name coloum
+
+set-location C:\users\alex\desktop											like cd command to move to alex's desktop
+ls															alias for powershell for gete-childitem; can't ls -la; shows files on alex's desktop
+move-item .\report\ c:\													moves report
+get-childitem C:\													like ls
+
+
+new-item demo_file													adds new file 
+new-item -Path "C:\" -Name "Logs",  -ItemType "Directory"	-force							like mkdir; parameter -path specifies where; -name
+new-item "backups", "scripts" -itemtype "directory"									makes multiple folders names backups and scripts; the comma (,) seperates the list
+remove-item .\demo_file													removes file
+
+get-command -name *process												quaries all availible commands with the word process
+
+
+start-process -FilePath CMD -verb RunAs											opens up command line terminal and -verb has it run as admin
+
+rename-item contracts Contracts1											renames file or directory and gives it a capital at the beginning, the rename again to get rid of 1
+
+
+get-winevent -logname system -maxevents 10										shows system logs for the top 10 events
+get-winevent -logname system -maxevents 10 | convertto-json								shows system log as json file printed to screen
+get-winevent -logname system -maxevents 10 | convertto-json | out-file -filepath C:\logs\recentsystemlogs.json		saves the .json file to a specified dir
+
+get-content C:\logs\recentsystemlogs.json										shows content of a file
+
+get-winevent -listlog *security*											shows logs for security
+get-winevent -logname Security -maxevents 100 | convertto-json | out-file -filepath c:\logs\recentsecuritylogs.json	writes output for 100 logs of security
+get-childitem c:\logs\
+
+
+
+*use gitbash and nano for powershell scripting* **can also use powershell ISE; this program is superior**
+
+
+cd C:\scripts														changes dir to c:\scripts
+ls
+nano example_script.ps1													powershell scripts end in .psi like .sh
+	$packagename="skype";
+	choco info $packagename												this script will show info for chocolaty package if it is installed
+ctrl+x to close out nano 
+ls 															to verify that .ps1 script was created
+*change to powershell to run powershell script*
+
+
+
+nano example_script.ps1									powershell scripts end in .psi like .sh
+	$packagename="skype";								
+	choco uninstall -y $packagename							this script will uninstall skype
+	get-childitem c:\         	
+ctrl+x to close out nano and save
+
+
+
+			**.csv files**											used to make a list to loop through in a powershell script, like uninstalling multiple packages
+
+$csv = import-csv -path "c:\users\azadmin\documents\demo\choco\chocodemo.csv"						importing this .csv file into a file
+
+foreach	($line in $csv) {
+	write-output $line. description
+}
+
+#$packagename="skype";								
+#choco uninstall -y $packagename
+
+
+
+$csv = import-csv -path "c:\users\azadmin\documents\demo\choco\chocodemo.csv"						importing this .csv file into a file
+
+foreach	($line in $csv) {
+	Choco uninstall -y $line.name
+	write-output "the package $($line.name) has been removed with the descrioption $($line.description)"
+
+}
+
+#$packagename="skype";								
+#choco uninstall -y $packagename	
+	
+
+
+
+									
+					

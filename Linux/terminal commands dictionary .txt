@@ -1,0 +1,197 @@
+less hack for root
+
+https://eraser.heidi.ie/			software that ereases a drive; dban alternative 
+
+*to grant sudo access without a pw needed*
+sudo visudo 				then add: username     ALL=(ALL) NOPASSWD:ALL
+
+wireshark					packet capturing program to see LAN traffic
+john the ripper				hash cracking program
+chocolate					a program					
+rockyou.txt					most common word list
+
+/etc						stores host-specific system wide config files as well as most sensitive files on system
+/etc/shadow 				where hashed passwords are stored
+/etc/passwd					shows users infoto change password
+/var						where files that change over time are stored
+/var/log					where log files are stored
+/tmp						where applications write temporary files that can be deleted on reboot.; great place for hackers to store malware becuase all files are deleted at reboot
+/bin and /sbin				where the system keeps its main binary or program files.
+
+ctrl+k 					deletes whole line in nano
+
+
+pwd						print working directory, displays current working directory 
+ls -lsa						list directories and files in the current working directory 
+cd ../	..					change directory 
+cp -r 	       					copy files to a new location; -r allows copying of multi files
+
+mkdir						makes a directory ; sudo mkdir -p /usr/share/{doctors,patients,treatments}
+
+
+
+
+rmdir						removes a directory
+touch						makes an empty file
+rm 						removes a file
+clear						clears terminal history
+
+
+exit						can be typed if there's a fuck up and don't know what else to do; see also ctrl+c
+..
+sudo 						gains /root access; type exit to leave instance
+su -						switch user; - after moves right into root
+visudo
+sudo !! 					adds sudo to the beginning of last commanded typed; bang bang
+
+mv            				move file command; rename
+
+*              				wild card; append to front or back of a keyword to include anything in front or behind 
+
+man ls           				manual for each command, ls exampled
+
+more  		 				view a file one page at at time. Space bar moves you to the next page.
+less    					similar to more, but it allows you to scroll up and down a file. 
+
+head -50       		        	shows first 10 lines, number added after designates how many lines to show
+tail 
+
+ctrl+f					to search for specific text after cat command or within a file
+ctrl+c
+q+enter
+
+cat						(concatenate) combine files; prints file contents to screen 
+ 
+>						overwrites
+>>						appends at end of file
+
+
+
+stdin						standard in
+stdout					standard out
+
+
+
+find -type f,d -iname				locate files based on search parameters 	
+
+grep -il					search within the contents of files; i denotes case insensitivity, l denotes to only show files namems w/o displaying contents
+'a\|b'						an OR statment; used to seperate different search paramaters a&b in a grep search field 
+
+wc						count words and lines; also can rename files
+
+
+text processing commands:
+
+echo -e						writes to the end of a file; -e signifies to run as a regular command
+
+sed						stream editor; 
+			
+awk -F" " '{print $2, $1}' filename		for data extraction 
+
+chmod +x examplefile.sh				gives permission for exe
+
+top							allows you to see all of the running processes in real time. 3 sec update
+
+ps							allows you to take a snapshot of all the running processes
+ps a							a stands for all processees that have a terminal assigned to them
+ps aux						u selects by effective user ID; x lists processes that do not have a terminal assigned to them
+ps aux | grep bash 	
+ps aux | less					to get a snapshot of all running processes in a more navigable output
+
+kill							is used to stop processes, usually ones that are causing problems
+killall 
+
+sudo killall -u jack
+
+apt install	packagename					installs an application
+emacs								a tradition file editor 
+cowsay							a utility that takes in input, and displays a cow repeating it
+fortune							a utility that will give you a random proerb with the intention of being interesting to user
+
+john hashlist.txt						attempts to crack hashlist.txt file
+john hashlist.txt -wordlist="wordlist.txt		attempts to crack hashlist.txt using wordlist.txt
+john --show hashlist.txt				to see the passwords john has already cracked
+/user/share/wordlists/rockyou.txt			path where rockyou.txt wordlist is stored by default
+
+su username							stands for switch user; used to switch users 
+sudo su 							switches to root 
+whoami							to view your current user
+exit								logs you out of user that was switched to
+
+sudo -l							to see what sudo access/privledge we currently have
+sudo -lU sally						to check the privileges user sally has
+
+chown owner:group exfile				changes ownership of file
+
+id sally							shows id info for sally
+groups username
+sudo usermod -aG sudo sally				to give sally full sudo access and add user to sudo group
+sudo usermod -L username				locks acount
+sudo usermod -G mike mike				removes mike from general group and adds to mike group
+sudo adduser --system --no-create-home splunk	makes a system user with no home folder with the username splunk
+deluser username						deletes user
+deluser --remove-home sam				removes home folder for sam
+deluser --remove-all-files username			removes all files for a specific user
+delgroup
+addgroup
+groups mike							shows what group mike belongs to
+
+
+sudo visudo							to open the sudoers file in nano; used to edit privileges
+[USER or %GROUP] HOST=(USER:GROUP) COMMAND	the general syntax in the sudoers file
+john  ALL=(ALL:ALL) /usr/bin/apt			adding this to the end of sudoers file gives john sudo privileges for apt command
+
+systemctl -t service --all		restarts all system services
+systemctl status smbd
+sudo systemctl stop smbd
+sudo systemctl disable smbd
+systemctl status smbd
+sudo apt remove samba
+
+sudo crontab -l						shows all con jobs at system level
+crontab -l							shows all cron jobs at user level
+crontab -e							allows editing cron jobs
+
+sudo ls -l var/spool/cron/crontabs			shows all users who have cron jobs
+
+
+
+journalctl -ef	
+
+
+
+
+sudo logrotat -vf /etc/logrotate.conf						
+
+
+auditd
+sudo auditctl -w /home/sysadmin/music		adds rule to auditd (without having to restart service)
+
+sudo aureport -au						shows failed logins
+sudo aureport -m 						shows what has been/is modified
+
+
+alias 							shows and allows to make custom commands 
+alias lh='ls -l'						creates a new lh command
+unalias ls							undoes any alias made as ls
+~/.bashrc							file to edit to make alias persistant through logout
+
+source ~/.bashrc 						reloads all alias 
+
+
+
+my_variable='hello world'
+echo $PWD							prints working directry
+
+\n								line break, go to new line; used in scripts
+
+2> /dev/null						won't print errors with a script on screen
+
+
+zip logs* logfiles.zip					compresses a file; logs* is the file to be compressed and logfiles.zip is the name of the new zip file
+
+ssh-keygen 							to generate an ssh key
+ssh-keygen -p -f ~/.ssh/id_rsa			to remove password from ssh key
+cat ~/.ssh/id_rsa.pub					to see the ssh key
+
+
