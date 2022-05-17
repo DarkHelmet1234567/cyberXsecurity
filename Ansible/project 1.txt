@@ -1,0 +1,133 @@
+ELK stack - elasticsearch + logstash + kibana   
+
+elasticsearch - search and analytics engine
+logstash - server-side data processing
+
+			
+
+---											all yaml files start with --- to signify it's yaml
+- name: My first playbook
+  hosts: webservers								where in the etc/hosts 
+  become: true									means run as admin
+  tasks: 
+  - name: Install apache HTTPD
+    apt: 
+      name: apache2 
+      state: present								present to install/absent to uninstall
+  -name: Step 2 
+   apt: 
+     name: docker.io
+     state: present
+
+
+
+                 http://23.100.68.3:5601/app/kibana            
+
+---
+- name: configure elk
+  hosts: elk
+  become: true
+  tasks:
+    - name: docker.io
+      apt:
+        update_cache: yes
+        name: docker.io
+        state: present
+    - name: Install pip3
+      apt:
+        name: python3-pip
+        state: present
+    - name: Install Docker python module
+      pip:
+        name: docker
+        state: present
+    - name: Enable docker service
+      systemd:
+        name: docker
+        enabled: yes
+    - name: use more memory
+      sysctl:
+        name: vm.max_map_count
+        value: "262144"
+        state: present
+        reload: yes
+    - name: Download and launch elk container
+      docker_container:
+        name: elk
+        image: sebp/elk:761
+        state: started
+        restart_policy: always
+        published_ports:
+          - 5601:5601
+          - 9200:9200
+          - 5044:5044
+
+
+
+mv /etc/ansible/filebeat-config.yml /etc/ansible/files/filebeat-config.yml
+
+
+
+- name: Installing and Launch Filebeat
+  hosts: webservers
+  become: yes
+  tasks:
+    # Use command module
+  - name: Download filebeat .deb file
+    command: curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.4.0-amd64.deb
+
+- name: Install filebeat .deb
+    command: dpkg -i filebeat-7.4.0-amd64.deb
+
+- name: Drop in filebeat.yml
+    copy:
+      src: /etc/ansible/files/filebeat-config.yml
+      dest: /etc/filebeat/filebeat.yml
+
+
+---
+- name: installing and launch filebeat
+  hosts: webservers
+  become: yes
+  tasks:   
+  - name: Download filebeat .deb file  
+    command: curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.4.0-amd64.deb
+  - name: install filebeat .deb
+    command: dpkg -i filebeat-7.4.0-amd64.deb
+  - name: drop in filebeat.yml
+    copy:
+      src: /etc/ansible/files/filebeat-config.yml
+      dest: /etc/filebeat/filebeat.yml
+  - name: enable and configure module
+    command: filebeat modules enable system 
+  - name: setup
+    command: filebeat setup
+  - name: start filebeat start
+    command: service filebeat start
+  - name: enable on boot
+    systemd:
+      name: filebeat
+      enabled: yes
+  - name: download metricbeat
+    command: curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-7.4.0-amd64.deb
+  - name: install metricbeat
+    command: dpkg -i metricbeat-7.4.0-amd64.deb
+  - name: drop in metricbeat config
+    copy:
+      src: /etc/ansible/files/metricbeat
+      dest: /etc/metricbeat/metricbeat.yml
+  - name: run metric beat enable command
+    command: metricbeat modules enable docker
+  - name: metricbeat setup
+    command: metricbeat setup
+  - name: start metric beat
+    command: service metricbeat start
+  - name: enable metricbeat on boot
+    systemd:
+      name: metricbeat
+      enabled: yes
+
+
+
+
+                                  
